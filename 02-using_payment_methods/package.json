@@ -1,0 +1,16 @@
+{
+  "name": "checkout-js-example",
+  "version": "1.0.0",
+  "description": "Sample to show you how to use Nemuru's checkout session",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "license": "ISC",
+  "engines": {
+    "node": ">= 20"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

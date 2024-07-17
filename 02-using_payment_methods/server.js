@@ -13,9 +13,13 @@ if (!USERNAME || !PASSWORD) {
 const app = express();
 
 app.use(express.static("public"));
+app.use(express.json());
 
-app.post("/create-checkout-session", async (req, res) => {
-  console.log("POST /create-checkout-session");
+app.post("/create-payment-intent", async (req, res) => {
+  console.log("POST /create-payment-intent");
+
+  // Get payment_method_type from request body
+  const { payment_method_type } = req.body;
 
   // Authenticate with Nemuru API
   const auth = await fetch(`${NEMURU_API_URL}/auth/login/`, {
@@ -81,8 +85,28 @@ app.post("/create-checkout-session", async (req, res) => {
   // Parse body of the response
   const { checkout_session_id, client_secret } = await checkoutSession.json();
 
+  const paymentIntent = await fetch(`${NEMURU_API_URL}/v2/checkout/intent/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${access_token}`,
+      Secret: client_secret,
+    },
+    body: JSON.stringify({
+      checkout_session_id,
+      payment_method_type,
+    }),
+  });
+
+  const { payment_method_id } = await paymentIntent.json();
+
   // Send the response to the client
-  res.json({ clientSecret: checkout_session_id, clientSecret: client_secret });
+  res.json({
+    checkoutSessionId: checkout_session_id,
+    clientSecret: client_secret,
+    paymentMethodId: payment_method_id,
+    accessToken: access_token,
+  });
 });
 
 app.listen(4000, () => console.log("Running on port 4000"));

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Nemuru | Using checkout session</title>
+    <meta
+      name="description"
+      content="Sample to show you how to use Nemuru's checkout.js"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://pay.nemuru.com/stg/checkout-js/checkout.js"></script>
+    <style>
+      #pay-btn {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section>
+        <div class="product">
+          <img
+            src="https://images.pexels.com/photos/4352247/pexels-photo-4352247.jpeg"
+            alt="Kivik Sofa"
+            height="120px"
+            width="120px"
+          />
+          <div class="description">
+            <h3>KIVIK 3-seat sofa</h3>
+            <p>
+              A memory foam sofa adapts to your body for comfy support, and it's
+              a place where memories are made.
+            </p>
+          </div>
+          <h3>875,00 €</h3>
+        </div>
+      </section>
+      <section>
+        <div id="payment-methods"></div>
+        <button id="pay-btn" disabled="true" onclick="onPay()">Pay</button>
+        <div id="payment-intent"></div>
+      </section>
+    </main>
+    <script>
+      const AGENT_ID = ""; // Client ID provided by Nemuru
+
+      const initialize = async () => {
+        // Initialize Nemuru (ensure awaiting async promise)
+        await nemuru.init(AGENT_ID);
+
+        // Available payment methods
+        const paymentMethods = nemuru.paymentMethods({ amount: 875 });
+
+        // Display each payment method
+        paymentMethods.forEach((paymentMethodType) => {
+          mountPaymentMethod(paymentMethodType);
+        });
+
+        // Show the pay button
+        document.querySelector("#pay-btn").style.display = "block";
+      };
+
+      const mountPaymentMethod = (paymentMethodType) => {
+        // Get the payment method conditions
+        const paymentMethod = nemuru.paymentMethod({
+          paymentMethodType,
+          amount: 875,
+          filters: ["lowest_apr", "largest_term"],
+        });
+
+        if (!paymentMethod.length) return;
+
+        // Create a div element with class radio-element
+        const radioElement = document.createElement("div");
+        radioElement.className = "radio-element";
+
+        // Add a radio button for the current paymentMethodType
+        const radio = document.createElement("input");
+        radio.type = "radio";
+        radio.name = "payment-method";
+        radio.value = paymentMethodType;
+        radio.id = paymentMethodType;
+
+        // Append the radio button to the radio-element div
+        radioElement.appendChild(radio);
+
+        // Create a label for the radio button
+        const paymentMethodLabels = {
+          bnpl_instalments: "Buy now, pay later",
+          consumer_loan_instalments: "Financing",
+          consumer_loan_split_pay: "Interest-free financing",
+        };
+        const label = document.createElement("label");
+        label.className = "radio-element-label";
+        label.htmlFor = paymentMethodType;
+        label.innerHTML = `
+            <span class="pm-logo"></span>
+            <span class="pm-type">${paymentMethodLabels[paymentMethodType]}</span>
+            <span class="pm-instalment">Pay from ${paymentMethod[0].conditions.instalmentTotalAmount.string} in ${paymentMethod[0].conditions.term} instalments</span>
+            <span class="pm-apr">${paymentMethod[0].conditions.apr.string} APR</span>
+          `;
+
+        // Append the label to the radio-element div
+        radioElement.appendChild(label);
+
+        // Create logo
+        const logo = document.createElement("img");
+        logo.className = "pm-logo";
+        logo.src = `https://cdn.nemuru.com/assets/logos/letterform/${paymentMethod[0].conditions.lenderName}-logo.svg`;
+        logo.style.width = "24px";
+        logo.style.height = "24px";
+        radioElement.appendChild(logo);
+
+        radioElement.addEventListener("click", () => {
+          radio.checked = true;
+          const payBtn = document.querySelector("#pay-btn");
+          if (payBtn.disabled) {
+            payBtn.disabled = false;
+          }
+        });
+
+        document.querySelector("#payment-methods").appendChild(radioElement);
+      };
+
+      const onPay = async () => {
+        const paymentMethodType = document.querySelector(
+          'input[name="payment-method"]:checked'
+        )?.value;
+
+        if (!paymentMethodType) return;
+
+        const response = await fetch("/create-payment-intent", {
+          method: "POST",
+          body: JSON.stringify({ payment_method_type: paymentMethodType }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        const { paymentMethodId, accessToken, clientSecret } =
+          await response.json();
+
+        const paymentIntent = nemuru.paymentIntent({
+          paymentMethodType,
+          paymentMethodId,
+          accessToken,
+          clientSecret,
+        });
+
+        paymentIntent.mount("#payment-intent");
+      };
+
+      initialize();
+    </script>
+  </body>
+</html>

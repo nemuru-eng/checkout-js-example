@@ -1,7 +1,7 @@
 {
   "name": "checkout-js-example",
   "version": "1.0.0",
-  "description": "Sample to show you how to use Nemuru's checkout.js",
+  "description": "Sample to show you how to use Nemuru's checkout session",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
