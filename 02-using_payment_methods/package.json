@@ -1,5 +1,5 @@
 {
-  "name": "checkout-js-example",
+  "name": "02-using_payment_methods",
   "version": "1.0.0",
   "description": "Sample to show you how to use Nemuru's checkout session",
   "main": "server.js",

@@ -15,11 +15,45 @@ const app = express();
 app.use(express.static("public"));
 app.use(express.json());
 
-app.post("/create-payment-intent", async (req, res) => {
-  console.log("POST /create-payment-intent");
+app.get("/get-client-secret/:checkout_session_id", async (req, res) => {
+  console.log("POST /get-client-secret");
 
-  // Get payment_method_type from request body
-  const { payment_method_type } = req.body;
+  // Get the checkout session ID from the request parameters
+  const checkoutSessionId = req.params.checkout_session_id;
+
+  // Authenticate with Nemuru API
+  const auth = await fetch(`${NEMURU_API_URL}/auth/login/`, {
+    method: "POST",
+    body: JSON.stringify({ username: USERNAME, password: PASSWORD }),
+  });
+
+  // Parse body of the response
+  const { access_token } = await auth.json();
+
+  // Get the client secret for the checkout session
+  const response = await fetch(
+    `${NEMURU_API_URL}/v2/checkout/${checkoutSessionId}/client-secret/`,
+    {
+      methid: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${access_token}`,
+      },
+    }
+  );
+
+  // Parse body of the response
+  const { client_secret } = await response.json();
+
+  res.json({
+    checkoutSessionId,
+    clientSecret: client_secret,
+  });
+});
+
+// Create checkout session (as in 01-using_checkout_session/server.js)
+app.post("/create-checkout-session", async (req, res) => {
+  console.log("POST /create-checkout-session");
 
   // Authenticate with Nemuru API
   const auth = await fetch(`${NEMURU_API_URL}/auth/login/`, {
@@ -85,6 +119,29 @@ app.post("/create-payment-intent", async (req, res) => {
   // Parse body of the response
   const { checkout_session_id, client_secret } = await checkoutSession.json();
 
+  // Send the response to the client
+  res.json({
+    checkoutSessionId: checkout_session_id,
+    clientSecret: client_secret,
+  });
+});
+
+app.post("/create-payment-intent", async (req, res) => {
+  console.log("POST /create-payment-intent");
+
+  // Get payment_method_type from request body
+  const { client_secret, checkout_session_id, payment_method_type } = req.body;
+
+  // Authenticate with Nemuru API
+  const auth = await fetch(`${NEMURU_API_URL}/auth/login/`, {
+    method: "POST",
+    body: JSON.stringify({ username: USERNAME, password: PASSWORD }),
+  });
+
+  // Parse body of the response
+  const { access_token } = await auth.json();
+
+  // Create a payment intent with the payment method type and checkout session ID
   const paymentIntent = await fetch(`${NEMURU_API_URL}/v2/checkout/intent/`, {
     method: "POST",
     headers: {
