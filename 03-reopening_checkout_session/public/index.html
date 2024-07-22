@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>03-reopening_checkout_session</title>
+    <meta
+      name="description"
+      content="Sample to show you how to use Nemuru's checkout.js"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://pay.nemuru.com/stg/checkout-js/checkout.js"></script>
+  </head>
+  <body>
+    <section>
+      <div class="checkout-session-type">
+        <p></p>
+      </div>
+    </section>
+    <main>
+      <section>
+        <div class="product">
+          <img
+            src="https://images.pexels.com/photos/4352247/pexels-photo-4352247.jpeg"
+            alt="Kivik Sofa"
+            height="120px"
+            width="120px"
+          />
+          <div class="description">
+            <h3>KIVIK 3-seat sofa</h3>
+            <p>
+              A memory foam sofa adapts to your body for comfy support, and it's
+              a place where memories are made.
+            </p>
+          </div>
+          <h3>875,00 €</h3>
+        </div>
+      </section>
+      <section>
+        <div id="nemuru-checkout"></div>
+      </section>
+    </main>
+    <script>
+      const AGENT_ID = ""; // Client ID provided by Nemuru
+
+      const initialize = async () => {
+        // Check if checkout session ID exists in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionId = urlParams.get("sessionId");
+
+        let res;
+
+        if (sessionId) {
+          // Retrieve client secret from existing checkout session ID
+          res = await getClientSecret(sessionId);
+        } else {
+          // Create a checkout session if no checkout session ID is provided
+          res = await createCheckoutSession();
+        }
+
+        const clientSecret = res.clientSecret;
+        const checkoutSessionId = res.checkoutSessionId;
+
+        // Add checkout session ID to the URL (to avoid losing it on page refresh and reusing it)
+        addToUrl(checkoutSessionId);
+
+        // Initialize Nemuru (ensure awaiting async promise)
+        await nemuru.init(AGENT_ID);
+
+        // Mount the checkout session
+        mountCheckoutSession(clientSecret);
+      };
+
+      const getClientSecret = async (checkoutSessionId) => {
+        displayCheckoutSessionType("existing");
+
+        // Retrieve the client secret from the checkout session ID
+        const response = await fetch(`/get-client-secret/${checkoutSessionId}`);
+        // Get the client secret and checkout session ID
+        const { clientSecret } = await response.json();
+        // Return the client secret
+        return { clientSecret, checkoutSessionId };
+      };
+
+      const createCheckoutSession = async () => {
+        displayCheckoutSessionType("new");
+
+        // Create a checkout session
+        const response = await fetch("/create-checkout-session", {
+          method: "POST",
+        });
+        // Get the client secret and checkout session ID
+        const { clientSecret, checkoutSessionId } = await response.json();
+        // Return the client secret
+        return { clientSecret, checkoutSessionId };
+      };
+
+      const displayCheckoutSessionType = (type) => {
+        document.querySelector(".checkout-session-type p").textContent =
+          type === "existing"
+            ? "Reopening existing checkout session"
+            : "Creating a new checkout session";
+        document.querySelector(".checkout-session-type").classList.add(type);
+      };
+
+      const addToUrl = (checkoutSessionId) => {
+        // Add checkout session ID to the URL
+        window.history.pushState({}, "", `?sessionId=${checkoutSessionId}`);
+      };
+
+      const mountCheckoutSession = (clientSecret) => {
+        // Set the session ID
+        const checkoutSession = nemuru.checkoutSession({
+          clientSecret,
+          onLoaded: () => console.log("onLoaded"),
+          onComplete: (status) => console.log("onComplete", status),
+          onError: (error) => console.log("onError", error),
+        });
+        // Mount the checkout session
+        checkoutSession.mount("#nemuru-checkout");
+      };
+
+      initialize();
+    </script>
+  </body>
+</html>

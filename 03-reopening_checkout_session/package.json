@@ -1,5 +1,5 @@
 {
-  "name": "01-using_checkout_session",
+  "name": "03-reopening_checkout_session",
   "version": "1.0.0",
   "description": "Sample to show you how to use Nemuru's checkout session",
   "main": "server.js",
