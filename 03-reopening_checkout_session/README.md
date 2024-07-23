@@ -1,6 +1,6 @@
-# Re-open an existing checkout session
+# Re-open an existing Checkout Session
 
-This example will teach you how to re-open an existing checkout session and mount Nemuru's checkout session component in your website.
+This example will teach you how to re-open an existing Checkout Session and mount Nemuru's Checkout Session Component in your website.
 
 ## Running the sample
 
@@ -45,47 +45,47 @@ First, you need to install the Nemuru checkout.js SDK. You can do this by includ
 
 ## Step 2: Create a Checkout Session
 
-This example uses the `sessionId` URL parameter to re-open an existing checkout session. You can use this parameter to re-open a checkout session that was previously created.
+This example uses the `sessionId` URL parameter to re-open an existing Checkout Session. You can use this parameter to re-open a Checkout Session that was previously created.
 
-If no `sessionId` is found within the URL, a new checkout session will be created.
+If no `sessionId` is found within the URL, a new Checkout Session will be created.
 
 This logic is handled in the `public/index.html` file, within the `initialize` function.
 
 ```javascript
 const initialize = async () => {
-  // Check if checkout session ID exists in the URL
+  // Check if Checkout Session ID exists in the URL
   const urlParams = new URLSearchParams(window.location.search);
   const sessionId = urlParams.get("sessionId");
 
   let res;
 
   if (sessionId) {
-    // Retrieve client secret from existing checkout session ID
+    // Retrieve client secret from existing Checkout Session ID
     res = await getClientSecret(sessionId);
   } else {
-    // Create a checkout session if no checkout session ID is provided
+    // Create a Checkout Session if no Checkout Session ID is provided
     res = await createCheckoutSession();
   }
 
   const clientSecret = res.clientSecret;
   const checkoutSessionId = res.checkoutSessionId;
 
-  // Add checkout session ID to the URL (to avoid losing it on page refresh and reusing it)
+  // Add Checkout Session ID to the URL (to avoid losing it on page refresh and reusing it)
   addToUrl(checkoutSessionId);
 
   // Initialize Nemuru (ensure awaiting async promise)
   await nemuru.init(AGENT_ID);
 
-  // Mount the checkout session
+  // Mount the Checkout Session
   mountCheckoutSession(clientSecret);
 };
 ```
 
-The `getClientSecret` and `createCheckoutSession` functions are used to retrieve the client secret from an existing checkout session or create a new checkout session, respectively. You should implement these functions in your server-side code. Check the `server.js` file for an example of how you can do this using Node.js and Express.
+The `getClientSecret` and `createCheckoutSession` functions are used to retrieve the client secret from an existing Checkout Session or create a new Checkout Session, respectively. You should implement these functions in your server-side code. Check the `server.js` file for an example of how you can do this using Node.js and Express.
 
-## Step 3: Mount the Checkout Session component
+## Step 3: Mount the Checkout Session Component
 
-After creating the checkout session, you can mount the checkout session component in your website. Check the `public/index.html` example of how you can do this.
+After creating the Checkout Session, you can mount the Checkout Session Component in your website. Check the `public/index.html` example of how you can do this.
 
 ```html
 <div id="checkout-session"></div>
@@ -98,7 +98,7 @@ After creating the checkout session, you can mount the checkout session componen
       onComplete: (status) => console.log("onComplete", status),
       onError: (error) => console.log("onError", error),
     });
-    // Mount the checkout session
+    // Mount the Checkout Session
     checkoutSession.mount("#nemuru-checkout");
   };
 </script>

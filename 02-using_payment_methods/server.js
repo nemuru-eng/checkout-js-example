@@ -18,7 +18,7 @@ app.use(express.json());
 app.get("/get-client-secret/:checkout_session_id", async (req, res) => {
   console.log("POST /get-client-secret");
 
-  // Get the checkout session ID from the request parameters
+  // Get the Checkout Session ID from the request parameters
   const checkoutSessionId = req.params.checkout_session_id;
 
   // Authenticate with Nemuru API
@@ -30,7 +30,7 @@ app.get("/get-client-secret/:checkout_session_id", async (req, res) => {
   // Parse body of the response
   const { access_token } = await auth.json();
 
-  // Get the client secret for the checkout session
+  // Get the client secret for the Checkout Session
   const response = await fetch(
     `${NEMURU_API_URL}/v2/checkout/${checkoutSessionId}/client-secret/`,
     {
@@ -51,7 +51,7 @@ app.get("/get-client-secret/:checkout_session_id", async (req, res) => {
   });
 });
 
-// Create checkout session (as in 01-using_checkout_session/server.js)
+// Create Checkout Session (as in 01-using_checkout_session/server.js)
 app.post("/create-checkout-session", async (req, res) => {
   console.log("POST /create-checkout-session");
 
@@ -67,7 +67,7 @@ app.post("/create-checkout-session", async (req, res) => {
   // Use your order reference
   const orderRef = Math.random().toString(36).substring(2);
 
-  // Create a checkout session
+  // Create a Checkout Session
   const checkoutSession = await fetch(`${NEMURU_API_URL}/v2/checkout/`, {
     method: "POST",
     headers: {
@@ -141,7 +141,7 @@ app.post("/create-payment-intent", async (req, res) => {
   // Parse body of the response
   const { access_token } = await auth.json();
 
-  // Create a payment intent with the payment method type and checkout session ID
+  // Create a payment intent with the payment method type and Checkout Session ID
   const paymentIntent = await fetch(`${NEMURU_API_URL}/v2/checkout/intent/`, {
     method: "POST",
     headers: {

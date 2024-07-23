@@ -1,6 +1,6 @@
 # Display Payment Methods
 
-This example demonstrates how to create a new checkout session using the `paymentMethod` and `paymentIntent` functions. This example uses the Nemuru checkout.js SDK to retrieve the available payment methods (`.paymentMethods`), display each payment method conditions (`.paymentMethod`), and then open an specific payment method process (`.paymentIntent`), once a checkout session has been created.
+This example demonstrates how to create a new Checkout Session using the `paymentMethod` and `paymentIntent` functions. This example uses the Nemuru checkout.js SDK to retrieve the available payment methods (`.paymentMethods`), display each payment method conditions (`.paymentMethod`), and then open an specific payment method process (`.paymentIntent`), once a Checkout Session has been created.
 
 ## Running the sample
 
@@ -45,41 +45,41 @@ First, you need to install the Nemuru checkout.js SDK. You can do this by includ
 
 ## Step 2: Create a Checkout Session
 
-When the customer arrives at the checkout page, you can create a new checkout session, or re-use an existing one, via server-side call.
+When the customer arrives at the checkout page, you can create a new Checkout Session, or re-use an existing one, via server-side call.
 
-This example uses the `sessionId` URL parameter to re-open an existing checkout session. You can use this parameter to re-open a checkout session that was previously created.
+This example uses the `sessionId` URL parameter to re-open an existing Checkout Session. You can use this parameter to re-open a Checkout Session that was previously created.
 
-If no `sessionId` is found within the URL, a new checkout session will be created.
+If no `sessionId` is found within the URL, a new Checkout Session will be created.
 
 This logic is handled in the `public/index.html` file, within the `initialize` function.
 
 ```javascript
 const initialize = async () => {
-  // Check if checkout session ID exists in the URL
+  // Check if Checkout Session ID exists in the URL
   const urlParams = new URLSearchParams(window.location.search);
   const sessionId = urlParams.get("sessionId");
 
   let res;
 
   if (sessionId) {
-    // Retrieve client secret from existing checkout session ID
+    // Retrieve client secret from existing Checkout Session ID
     res = await getClientSecret(sessionId);
   } else {
-    // Create a checkout session if no checkout session ID is provided
+    // Create a Checkout Session if no Checkout Session ID is provided
     res = await createCheckoutSession();
   }
 
   const clientSecret = res.clientSecret;
   const checkoutSessionId = res.checkoutSessionId;
 
-  // Add checkout session ID to the URL (to avoid losing it on page refresh and reusing it)
+  // Add Checkout Session ID to the URL (to avoid losing it on page refresh and reusing it)
   addToUrl(clientSecret, checkoutSessionId);
 
   ...
 };
 ```
 
-The `getClientSecret` and `createCheckoutSession` functions are used to retrieve the client secret from an existing checkout session or create a new checkout session, respectively. You should implement these functions in your server-side code. Check the `server.js` file for an example of how you can do this using Node.js and Express.
+The `getClientSecret` and `createCheckoutSession` functions are used to retrieve the client secret from an existing Checkout Session or create a new Checkout Session, respectively. You should implement these functions in your server-side code. Check the `server.js` file for an example of how you can do this using Node.js and Express.
 
 ## Step 3: Display available payment methods
 
@@ -109,7 +109,7 @@ const initialize = async () => {
 
 ## Step 4: Mount the payment intent process
 
-When the customer selects a payment method and clicks your 'pay' button, you can then create a payment intent via server-side call (this attaches a payment intent to checkout session).
+When the customer selects a payment method and clicks your 'pay' button, you can then create a payment intent via server-side call (this attaches a payment intent to Checkout Session).
 
 After creating the payment intent, you can mount the payment intent process so that your customer can complete the payment process (`nemuru.paymentIntent()`).
 
@@ -122,7 +122,7 @@ After creating the payment intent, you can mount the payment intent process so t
       'input[name="payment-method"]:checked'
     )?.value;
 
-    // Get the client secret and checkout session ID from the URL
+    // Get the client secret and Checkout Session ID from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const sessionId = urlParams.get("sessionId");
     const secret = urlParams.get("secret");

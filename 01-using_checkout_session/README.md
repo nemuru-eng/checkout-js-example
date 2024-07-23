@@ -1,10 +1,10 @@
-# Create and mount a new checkout session
+# Create and mount a new Checkout Session
 
-This example will teach you how to create a checkout session and mount Nemuru's checkout session component in your website. This is a pre-built component that will handle the payment process for you.
+This example will teach you how to create a Checkout Session and mount Nemuru's Checkout Session Component in your website. This is a pre-built component that will handle the payment process for you.
 
-If you want to learn how to re-open an existing checkout session, check the [Re-open an existing checkout session](../03-reopening_checkout_session/README.md) example.
+If you want to learn how to re-open an existing Checkout Session, check the [Re-open an existing Checkout Session](../03-reopening_checkout_session/README.md) example.
 
-If you prefer not to use the checkout session component, you can use the [Payment Methods](../02-using_payment_methods/README.md) example.
+If you prefer not to use the Checkout Session Component, you can use the [Payment Methods](../02-using_payment_methods/README.md) example.
 
 ## Running the sample
 
@@ -49,13 +49,13 @@ First, you need to install the Nemuru checkout.js SDK. You can do this by includ
 
 ## Step 2: Create a Checkout Session
 
-To create a checkout session, you will need to make a server-side request to Nemuru's API. Check the `server.js` example of how you can do this using Node.js and Express.
+To create a Checkout Session, you will need to make a server-side request to Nemuru's API. Check the `server.js` example of how you can do this using Node.js and Express.
 
-Once the Checkout Session is created, you will receive a `clientSecret` that you will use to mount the checkout session component in your website.
+Once the Checkout Session is created, you will receive a `clientSecret` that you will use to mount the Checkout Session Component in your website.
 
-## Step 3: Mount the Checkout Session component
+## Step 3: Mount the Checkout Session Component
 
-After creating the checkout session, you can mount the checkout session component in your website. Check the `public/index.html` example of how you can do this.
+After creating the Checkout Session, you can mount the Checkout Session Component in your website. Check the `public/index.html` example of how you can do this.
 
 ```html
 <div id="checkout-session"></div>
@@ -68,7 +68,7 @@ After creating the checkout session, you can mount the checkout session componen
       onComplete: (status) => console.log("onComplete", status),
       onError: (error) => console.log("onError", error),
     });
-    // Mount the checkout session
+    // Mount the Checkout Session
     checkoutSession.mount("#nemuru-checkout");
   };
 </script>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Nemuru | Using checkout session</title>
+    <title>Nemuru | Using Checkout Session</title>
     <meta
       name="description"
       content="Sample to show you how to use Nemuru's checkout.js"
@@ -40,18 +40,18 @@
       const initialize = async () => {
         // Initialize Nemuru (ensure awaiting async promise)
         await nemuru.init(AGENT_ID);
-        // Create a checkout session
+        // Create a Checkout Session
         const { clientSecret } = await createCheckoutSession();
-        // Mount the checkout session
+        // Mount the Checkout Session
         mountCheckoutSession(clientSecret);
       };
 
       const createCheckoutSession = async () => {
-        // Create a checkout session
+        // Create a Checkout Session
         const response = await fetch("/create-checkout-session", {
           method: "POST",
         });
-        // Get the client secret and checkout session ID
+        // Get the client secret and Checkout Session ID
         const { clientSecret, checkoutSessionId } = await response.json();
         // Return the client secret
         return { clientSecret, checkoutSessionId };
@@ -65,7 +65,7 @@
           onComplete: (status) => console.log("onComplete", status),
           onError: (error) => console.log("onError", error),
         });
-        // Mount the checkout session
+        // Mount the Checkout Session
         checkoutSession.mount("#nemuru-checkout");
       };
 

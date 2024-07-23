@@ -29,7 +29,7 @@ app.post("/create-checkout-session", async (req, res) => {
   // Use your order reference
   const orderRef = Math.random().toString(36).substring(2);
 
-  // Create a checkout session
+  // Create a Checkout Session
   const checkoutSession = await fetch(`${NEMURU_API_URL}/v2/checkout/`, {
     method: "POST",
     headers: {
@@ -88,4 +88,4 @@ app.post("/create-checkout-session", async (req, res) => {
   });
 });
 
-app.listen(4000, () => console.log("Running on port http://localhost:4000"));
+app.listen(4000, () => console.log("Running on http://localhost:4000"));
