@@ -222,6 +222,8 @@
           paymentMethodId,
           accessToken,
           clientSecret,
+          onClose: (status) => console.log("onClose", status),
+          onError: (error) => console.log("onError", error),
         });
 
         paymentIntent.mount("#payment-intent");

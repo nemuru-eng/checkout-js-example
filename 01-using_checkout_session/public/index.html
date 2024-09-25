@@ -63,6 +63,16 @@
           clientSecret,
           onLoaded: () => console.log("onLoaded"),
           onComplete: (status) => console.log("onComplete", status),
+          onPaymentIntentClosed: ({
+            paymentMethodId,
+            paymentMethodType,
+            status,
+          }) =>
+            console.log("onPaymentIntentClosed", {
+              paymentMethodId,
+              paymentMethodType,
+              status,
+            }),
           onError: (error) => console.log("onError", error),
         });
         // Mount the checkout session

@@ -149,6 +149,8 @@ After creating the payment intent, you can mount the payment intent process so t
       paymentMethodId,
       accessToken,
       clientSecret,
+      onClose: (status) => console.log("onClose", status),
+      onError: (error) => console.log("onError", error),
     });
 
     paymentIntent.mount("#payment-intent");
