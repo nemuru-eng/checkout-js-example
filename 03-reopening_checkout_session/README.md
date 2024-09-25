@@ -98,11 +98,7 @@ After creating the checkout session, you can mount the checkout session componen
       onComplete: (status) => console.log("onComplete", status),
       onError: (error) => console.log("onError", error),
       onPaymentIntentClosed: ({ paymentMethodId, paymentMethodType, status }) =>
-        console.log("onPaymentIntentClosed", {
-          paymentMethodId,
-          paymentMethodType,
-          status,
-        }),
+        console.log("onPaymentIntentClosed"),
     });
     // Mount the checkout session
     checkoutSession.mount("#nemuru-checkout");
