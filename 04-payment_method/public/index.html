@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>04-payment_method</title>
+    <meta
+      name="description"
+      content="Sample to show you how to use Nemuru's checkout.js"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://pay.nemuru.com/stg/checkout-js/checkout.js"></script>
+  </head>
+  <body>
+    <main>
+      <section>
+      <section>
+        <div id="payment-methods"></div>
+      </section>
+    </main>
+    <script>
+      const AGENT_ID = ""; // Client ID provided by Nemuru
+
+      const initialize = async () => {
+        // Initialize Nemuru (ensure awaiting async promise)
+        await nemuru.init(AGENT_ID);
+
+        // Available payment methods
+        const paymentMethods = nemuru.paymentMethods({ amount: 875 });
+
+        // Display each payment method
+        paymentMethods.forEach((paymentMethodType) => {
+          mountPaymentMethod(paymentMethodType);
+        });
+      };
+
+      const mountPaymentMethod = (paymentMethodType) => {
+        // Get the payment method conditions
+        const paymentMethod = nemuru.paymentMethod({
+          paymentMethodType,
+          amount: 875,
+          filters: ["lowest_apr", "largest_term"],
+        });
+
+        if (!paymentMethod.length) return;
+
+        const div = document.createElement("div");
+        div.className = "payment-method";
+
+        // Create a labels
+        const paymentMethodLabels = {
+          bnpl_instalments: "Buy now, pay later",
+          consumer_loan_instalments: "Financing",
+          consumer_loan_split_pay: "Interest-free financing",
+        };
+
+        const label = document.createElement("label");
+        label.className = "payment-method-label";
+        label.htmlFor = paymentMethodType;
+        label.innerHTML = `
+            <span class="pm-logo"></span>
+            <span class="pm-type">${paymentMethodLabels[paymentMethodType]}</span>
+            <span class="pm-instalment">Pay from ${paymentMethod[0].conditions.instalmentTotalAmount.string} in ${paymentMethod[0].conditions.term} instalments</span>
+            <span class="pm-apr">${paymentMethod[0].conditions.apr.string} APR</span>
+          `;
+
+        // Append the label to the radio-element div
+        div.appendChild(label);
+
+        // Create logo
+        const logo = document.createElement("img");
+        logo.className = "pm-logo";
+        logo.src = `https://cdn.nemuru.com/assets/logos/letterform/${paymentMethod[0].conditions.lenderName}-logo.svg`;
+        logo.style.width = "24px";
+        logo.style.height = "24px";
+
+        // Append the logo to the div
+        div.appendChild(logo);
+
+        document.querySelector("#payment-methods").appendChild(div);
+      };
+
+      initialize();
+    </script>
+  </body>
+</html>
