@@ -66,16 +66,6 @@
         // Append the label to the radio-element div
         div.appendChild(label);
 
-        // Create logo
-        const logo = document.createElement("img");
-        logo.className = "pm-logo";
-        logo.src = `https://cdn.nemuru.com/assets/logos/letterform/${paymentMethod[0].conditions.lenderName}-logo.svg`;
-        logo.style.width = "24px";
-        logo.style.height = "24px";
-
-        // Append the logo to the div
-        div.appendChild(logo);
-
         document.querySelector("#payment-methods").appendChild(div);
       };
 
