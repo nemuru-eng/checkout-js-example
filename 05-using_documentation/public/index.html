@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>05-using_documentation</title>
+    <meta
+      name="description"
+      content="Sample to show you how to use Nemuru's checkout.js Documentation component"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://pay.nemuru.com/stg/checkout-js/checkout.js"></script>
+  </head>
+  <body>
+    <main>
+      <section>
+      <section>
+        <div id="nemuru-documentation"></div>
+      </section>
+    </main>
+    <script>
+      const AGENT_ID = ""; // Client ID provided by Nemuru
+      const CLIENT_SECRET = ""; // Checkout Session Client Secret provided by Nemuru
+
+      const initialize = async () => {
+        // Initialize Nemuru (ensure awaiting async promise)
+        await nemuru.init(AGENT_ID);
+
+        // Configure and mount documentation component
+        mountDocumentationComponent(CLIENT_SECRET);
+      };
+
+      const mountDocumentationComponent = (clientSecret) => {        
+        // Configure component
+        const documentation = nemuru.documentation({
+          clientSecret,
+          options: { locale: 'es', mode: 'dialog_transparent' },
+          onLoaded: () => console.log("onLoaded"),
+          onComplete: () => console.log("onComplete"),
+          onClose: () => console.log("onClose"),
+          onError: (error) => console.log("onError", error),
+        });
+        
+        // Mount component
+        documentation.mount("#nemuru-documentation");
+      };
+
+      initialize();
+    </script>
+  </body>
+</html>
