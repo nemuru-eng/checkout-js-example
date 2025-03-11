@@ -4,7 +4,7 @@ This example demonstrates how mount Nemuru's Documentation component in your web
 
 This example assumes you have a checkout session client secret. If you don't have one, you can create a new checkout session using the [Create Checkout Session](https://docs.nemuru.com/checkout-session-embedded-api#operation/postCheckoutSession) endpoint.
 
-![alt text](docs/documentation.png)
+![alt text](docs/documentation-01.png)
 
 ## Running the sample
 
