@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>02-using_payment_methods</title>
+    <title>02-using_payment_intent_component</title>
     <meta
       name="description"
       content="Sample to show you how to use Nemuru's checkout.js"
@@ -50,27 +50,6 @@
       const AGENT_ID = ""; // Client ID provided by Nemuru
 
       const initialize = async () => {
-        // Check if checkout session ID exists in the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const sessionId = urlParams.get("sessionId");
-        const secret = urlParams.get("secret");
-
-        let res;
-
-        if (sessionId && secret) {
-          // Retrieve client secret from existing checkout session ID
-          res = await getClientSecret(sessionId);
-        } else {
-          // Create a checkout session if no checkout session ID is provided
-          res = await createCheckoutSession();
-        }
-
-        const clientSecret = res.clientSecret;
-        const checkoutSessionId = res.checkoutSessionId;
-
-        // Add checkout session ID to the URL (to avoid losing it on page refresh and reusing it)
-        addToUrl(clientSecret, checkoutSessionId);
-
         // Initialize Nemuru (ensure awaiting async promise)
         await nemuru.init(AGENT_ID);
 
@@ -91,8 +70,10 @@
 
         // Retrieve the client secret from the checkout session ID
         const response = await fetch(`/get-client-secret/${checkoutSessionId}`);
+
         // Get the client secret and checkout session ID
         const { clientSecret } = await response.json();
+
         // Return the client secret
         return { clientSecret, checkoutSessionId };
       };
@@ -104,8 +85,10 @@
         const response = await fetch("/create-checkout-session", {
           method: "POST",
         });
+
         // Get the client secret and checkout session ID
         const { clientSecret, checkoutSessionId } = await response.json();
+
         // Return the client secret
         return { clientSecret, checkoutSessionId };
       };
@@ -195,32 +178,30 @@
           'input[name="payment-method"]:checked'
         )?.value;
 
-        // Get the client secret and checkout session ID from the URL
+        // Check if checkout session ID exists in the URL
         const urlParams = new URLSearchParams(window.location.search);
         const sessionId = urlParams.get("sessionId");
         const secret = urlParams.get("secret");
 
-        if (!paymentMethodType || !sessionId || !secret) return;
+        let res;
 
-        const response = await fetch("/create-payment-intent", {
-          method: "POST",
-          body: JSON.stringify({
-            payment_method_type: paymentMethodType,
-            checkout_session_id: sessionId,
-            client_secret: secret,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        if (sessionId && secret) {
+          // Retrieve client secret from existing checkout session ID
+          res = await getClientSecret(sessionId);
+        } else {
+          // Create a checkout session if no checkout session ID is provided
+          res = await createCheckoutSession();
+        }
 
-        const { paymentMethodId, accessToken, clientSecret } =
-          await response.json();
+        const clientSecret = res.clientSecret;
+        const checkoutSessionId = res.checkoutSessionId;
 
+        // Add checkout session ID to the URL (to avoid losing it on page refresh and reusing it)
+        addToUrl(clientSecret, checkoutSessionId);
+
+        // Mount the payment intent
         const paymentIntent = nemuru.paymentIntent({
           paymentMethodType,
-          paymentMethodId,
-          accessToken,
           clientSecret,
           onClose: (status) => console.log("onClose", status),
           onError: (error) => console.log("onError", error),

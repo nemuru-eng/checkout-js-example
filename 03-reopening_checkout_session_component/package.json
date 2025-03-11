@@ -1,7 +1,7 @@
 {
-  "name": "04-payment_method",
+  "name": "03-reopening_checkout_session_component",
   "version": "1.0.0",
-  "description": "Sample to show you how to use Nemuru's payment methods",
+  "description": "Sample to show you how to use Nemuru's checkout session",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

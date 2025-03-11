@@ -97,7 +97,7 @@ After creating the checkout session, you can mount the checkout session componen
       onLoaded: () => console.log("onLoaded"),
       onComplete: (status) => console.log("onComplete", status),
       onError: (error) => console.log("onError", error),
-      onPaymentIntentClosed: ({ paymentMethodId, paymentMethodType, status }) =>
+      onPaymentIntentClosed: ({ paymentMethodType, status }) =>
         console.log("onPaymentIntentClosed"),
     });
     // Mount the checkout session

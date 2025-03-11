@@ -1,7 +1,7 @@
 {
-  "name": "02-using_payment_methods",
+  "name": "04-show_payment_method_conditions",
   "version": "1.0.0",
-  "description": "Sample to show you how to use Nemuru's checkout session",
+  "description": "Sample to show you how to use Nemuru's payment methods",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"

@@ -1,10 +1,11 @@
-# Create and mount a new checkout session
+# Using Checkout Session component
 
-This example will teach you how to create a checkout session and mount Nemuru's checkout session component in your website. This is a pre-built component that will handle the payment process for you.
+This example will teach you how to create a checkout session and mount Nemuru's Checkout Session component in your website. This is a pre-built, all-in-one component that will handle the payment process for you.
 
-If you want to learn how to re-open an existing checkout session, check the [Re-open an existing checkout session](../03-reopening_checkout_session/README.md) example.
+If you want to learn how to re-open an existing checkout session, check the [Re-open an existing checkout session](../03-reopening_checkout_session_component/README.md) example.
 
-If you prefer not to use the checkout session component, you can use the [Payment Methods](../02-using_payment_methods/README.md) example.
+If you prefer not to use the checkout session component, you can use the [Payment Intent component](../02-using_payment_intent_component/README.md) example
+to create a specific payment intent and mount the Payment Intent component in your website.
 
 ## Running the sample
 
@@ -67,7 +68,7 @@ After creating the checkout session, you can mount the checkout session componen
       onLoaded: () => console.log("onLoaded"),
       onComplete: (status) => console.log("onComplete", status),
       onError: (error) => console.log("onError", error),
-      onPaymentIntentClosed: ({ paymentMethodId, paymentMethodType, status }) =>
+      onPaymentIntentClosed: ({ paymentMethodType, status }) =>
         console.log("onPaymentIntentClosed"),
     });
     // Mount the checkout session
