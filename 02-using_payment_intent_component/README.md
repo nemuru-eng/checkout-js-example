@@ -2,7 +2,7 @@
 
 This example demonstrates how to create a new checkout session and open an specific payment method by using the Payment Intent component.
 
-This example uses the Nemuru checkout.js SDK to retrieve the available payment methods (`.paymentMethods`), display each payment method conditions (`.paymentMethod`), and then open an specific payment intent (`.paymentIntent`), once a checkout session has been created.
+This example uses the Nemuru checkout.js SDK to retrieve the available payment methods (`.availablePaymentMethods`), display each payment method conditions (`.paymentMethodConditions`), and then open an specific payment intent (`.paymentIntent`), once a checkout session has been created.
 
 ## Running the sample
 

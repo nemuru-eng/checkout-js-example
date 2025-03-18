@@ -1,6 +1,6 @@
 # Show payment method conditions
 
-This example demonstrates how to display the payment method conditions using the `paymentMethods` and `paymentMethod` functions. This example uses the Nemuru checkout.js SDK to retrieve the available payment methods (`.paymentMethods`) and display each payment method conditions (`.paymentMethod`).
+This example demonstrates how to display the payment method conditions using the `paymentMethods` and `paymentMethod` functions. This example uses the Nemuru checkout.js SDK to retrieve the available payment methods (`.availablePaymentMethods`) and display each payment method conditions (`.paymentMethodConditions`).
 
 ![alt text](docs/payment-methods.png)
 
