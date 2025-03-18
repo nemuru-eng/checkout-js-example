@@ -47,9 +47,9 @@ First, you need to install the Nemuru checkout.js SDK. You can do this by includ
 
 ## Step 2: Display available payment methods
 
-Initialize the Nemuru SDK (`await nemuru.init()`), and retrieve the available payment methods (`nemuru.paymentMethods()`). This will return a list of available payment methods that you can display to your customer based on the order amount supplied.
+Initialize the Nemuru SDK (`await nemuru.init()`), and retrieve the available payment methods (`nemuru.availablePaymentMethods()`). This will return a list of available payment methods that you can display to your customer based on the order amount supplied.
 
-You can then display each payment method specific conditions (`nemuru.paymentMethod()`).
+You can then display each payment method specific conditions (`nemuru.paymentMethodConditions()`).
 
 ```javascript
 const initialize = async () => {
@@ -59,7 +59,7 @@ const initialize = async () => {
   await nemuru.init(AGENT_ID);
 
   // Available payment methods
-  const paymentMethods = nemuru.paymentMethods({ amount: 875 });
+  const paymentMethods = nemuru.availablePaymentMethods({ amount: 875 });
 
   // Display each payment method
   paymentMethods.forEach((paymentMethodType) => {

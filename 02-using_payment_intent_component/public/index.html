@@ -54,7 +54,7 @@
         await nemuru.init(AGENT_ID);
 
         // Available payment methods
-        const paymentMethods = nemuru.paymentMethods({ amount: 875 });
+        const paymentMethods = nemuru.availablePaymentMethods({ amount: 875 });
 
         // Display each payment method
         paymentMethods.forEach((paymentMethodType) => {
@@ -112,7 +112,7 @@
 
       const mountPaymentMethod = (paymentMethodType) => {
         // Get the payment method conditions
-        const paymentMethod = nemuru.paymentMethod({
+        const paymentMethod = nemuru.paymentMethodConditions({
           paymentMethodType,
           amount: 875,
           filters: ["lowest_apr", "largest_term"],
